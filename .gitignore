@@ -1,0 +1,5 @@
+/venv
+/account_source
+/app.db
+
+__pycache__

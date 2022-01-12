@@ -1,8 +1,8 @@
 import os
-
-from .csv import csv_to_dict
 from .app import app
+from .csv import csv_to_dict
 from .db import get_db
+from .model import tx_from_bofa_credit_csv
 from flask import render_template
 
 
@@ -24,11 +24,14 @@ def donations():
 @app.route("/setup")
 def setup():
     db = get_db()
-    # Create the tables:
-    # Transaction
-    # Account
-    # Category
-    # Merchant
+    # CREATE TABLE `Transaction` (
+    # 	`posted_date` DATE,
+    # 	`description` TEXT,
+    # 	`amount` DECIMAL
+    # );
+    # CREATE TABLE `Account`
+    # CREATE TABLE `Category`
+    # CREATE TABLE `Merchant`
     return "<p>Setup</p>"
 
 
@@ -43,4 +46,8 @@ def import_accounts():
             fn = src_dir + os.sep + account_name + os.sep + src
             print(f"Importing {fn}")
             tx_list += csv_to_dict(fn)
+
+    for tx in tx_list:
+        tx_from_bofa_credit_csv(tx)
+
     return render_template("import.html", tx_list=tx_list)
